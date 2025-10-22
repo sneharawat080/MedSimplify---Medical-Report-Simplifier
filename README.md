@@ -4,7 +4,6 @@
 
 MedSimplify is an AI-powered web application that translates complex medical reports into simple, easy-to-understand language. Our platform helps patients and caregivers understand medical terminology, test results, and health indicators without needing medical expertise.
 
-![MedSimplify Demo](https://via.placeholder.com/800x400/2E7D32/FFFFFF?text=MedSimplify+-+Understand+Your+Medical+Reports)
 
 ## ✨ Key Features
 
