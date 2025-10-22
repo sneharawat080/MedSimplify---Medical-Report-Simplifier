@@ -1,0 +1,25 @@
+COMPREHENSIVE BLOOD TEST REPORT
+Patient: John Smith, Age: 45
+
+COMPLETE BLOOD COUNT:
+WBC: 7.2 x 10^3/μL (Normal: 4.5-11.0)
+RBC: 4.9 x 10^6/μL (Normal: 4.2-5.8)
+Hemoglobin: 11.5 g/dL (Normal: 12.0-16.0)
+Hematocrit: 43% (Normal: 36-48%)
+Platelets: 240 x 10^3/μL (Normal: 150-450)
+
+METABOLIC PANEL:
+Glucose: 115 mg/dL (Normal: 70-100 mg/dL)
+Creatinine: 1.3 mg/dL (Normal: 0.6-1.2 mg/dL)
+Sodium: 139 mEq/L (Normal: 135-145 mEq/L)
+Potassium: 4.1 mEq/L (Normal: 3.5-5.0 mEq/L)
+
+LIVER FUNCTION:
+ALT: 48 U/L (Normal: 7-56 U/L)
+AST: 35 U/L (Normal: 10-40 U/L)
+
+LIPID PANEL:
+Total Cholesterol: 215 mg/dL (Desirable: <200 mg/dL)
+LDL: 135 mg/dL (Optimal: <100 mg/dL)
+HDL: 42 mg/dL (Desirable: >40 mg/dL)
+Triglycerides: 160 mg/dL (Normal: <150 mg/dL)
