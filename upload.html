@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Medical Reports | MedSimplify</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2E7D32;
+            --primary-dark: #1B5E20;
+            --primary-light: #4CAF50;
+            --secondary: #1565C0;
+            --secondary-light: #42A5F5;
+            --light-gray: #F8F9FA;
+            --medium-gray: #E9ECEF;
+            --dark-gray: #333333;
+            --text-gray: #6C757D;
+            --white: #FFFFFF;
+            --light-blue: #E6F2FF;
+            --accent: #FF9800;
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --danger: #F44336;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body { 
+            background-color: var(--white); 
+            color: var(--dark-gray); 
+            line-height: 1.6; 
+            overflow-x: hidden;
+        }
+
+        .container { 
+            width: 100%; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 0 20px; 
+        }
+
+        header {
+            background-color: var(--white); 
+            color: var(--dark-gray);
+            padding: 20px 0; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .header-scrolled {
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header-content { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            flex-wrap: wrap; 
+        }
+        
+        .logo { 
+            font-size: 28px; 
+            font-weight: 700; 
+            display: flex; 
+            align-items: center; 
+            text-decoration: none;
+            color: var(--dark-gray);
+        }
+        
+        .logo span { 
+            color: var(--primary); 
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        nav ul { 
+            display: flex; 
+            list-style: none; 
+            flex-wrap: wrap; 
+        }
+        
+        nav ul li { 
+            margin-left: 25px; 
+        }
+        
+        nav ul li a { 
+            color: var(--dark-gray); 
+            text-decoration: none; 
+            font-weight: 500; 
+            transition: color 0.3s; 
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        nav ul li a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+        
+        nav ul li a:hover { 
+            color: var(--primary); 
+        }
+        
+        nav ul li a:hover:after {
+            width: 100%;
+        }
+
+        .auth-buttons { 
+            display: flex; 
+            gap: 15px; 
+        }
+        
+        .btn { 
+            padding: 12px 28px; 
+            border-radius: 50px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            border: none; 
+            font-size: 15px; 
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-outline { 
+            background-color: transparent; 
+            border: 2px solid var(--primary); 
+            color: var(--primary); 
+        }
+        
+        .btn-outline:hover { 
+            background-color: var(--primary); 
+            color: var(--white); 
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-primary { 
+            background: var(--gradient); 
+            color: var(--white); 
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-primary:hover { 
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Upload Hero Section */
+        .upload-hero { 
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="rgba(46,125,50,0.05)" stroke-width="1"/></svg>');
+            color: var(--dark-gray); 
+            padding: 80px 0 60px; 
+            text-align: center; 
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .upload-hero-content { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            position: relative;
+            z-index: 2;
+        }
+        
+        .upload-hero h1 { 
+            font-size: 42px; 
+            margin-bottom: 20px; 
+            line-height: 1.2; 
+            color: var(--dark-gray); 
+            font-weight: 700;
+        }
+        
+        .upload-hero h1 span { 
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .upload-hero p { 
+            font-size: 18px; 
+            margin-bottom: 40px; 
+            color: var(--text-gray); 
+            max-width: 600px; 
+            margin-left: auto; 
+            margin-right: auto; 
+        }
+
+        /* Upload Section */
+        .upload-section { 
+            padding: 60px 0; 
+            background-color: var(--white);
+        }
+        
+        .upload-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        
+        .upload-options-container {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .upload-instructions {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--light-gray);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+        
+        .upload-instructions h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .upload-instructions ul {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+        
+        .upload-instructions ul li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+            color: var(--text-gray);
+        }
+        
+        .upload-instructions ul li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        .upload-instructions .note {
+            background-color: rgba(255, 152, 0, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .upload-options {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .upload-option {
+            background-color: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            border: 2px dashed var(--medium-gray);
+            transition: all 0.3s;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .upload-option:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+        
+        .upload-option:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-light);
+        }
+        
+        .upload-option.active {
+            border-color: var(--primary);
+            background-color: rgba(46, 125, 50, 0.05);
+        }
+        
+        .upload-option i {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .upload-option h3 {
+            margin-bottom: 15px;
+            color: var(--dark-gray);
+            font-size: 22px;
+        }
+        
+        .upload-option p {
+            color: var(--text-gray);
+            margin-bottom: 20px;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .upload-preview {
+            margin-top: 30px;
+            display: none;
+        }
+        
+        .upload-preview.active {
+            display: block;
+        }
+        
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .preview-content {
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .preview-content i {
+            font-size: 60px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .file-info {
+            margin-top: 15px;
+        }
+        
+        .file-info h4 {
+            margin-bottom: 5px;
+            color: var(--dark-gray);
+        }
+        
+        .file-info p {
+            color: var(--text-gray);
+            font-size: 14px;
+        }
+        
+        .upload-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: var(--medium-gray);
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+            display: none;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: var(--gradient);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .upload-success {
+            text-align: center;
+            padding: 30px;
+            display: none;
+        }
+        
+        .upload-success.active {
+            display: block;
+        }
+        
+        .upload-success i {
+            font-size: 60px;
+            color: var(--success);
+            margin-bottom: 20px;
+        }
+        
+        .upload-success h3 {
+            color: var(--dark-gray);
+            margin-bottom: 15px;
+        }
+        
+        .upload-success p {
+            color: var(--text-gray);
+            margin-bottom: 25px;
+        }
+
+        /* Results Section */
+        .results-section {
+            padding: 60px 0;
+            background-color: var(--light-gray);
+            display: none;
+        }
+        
+        .results-section.active {
+            display: block;
+        }
+        
+        .results-container {
+            background-color: var(--white);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+        }
+        
+        .results-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .results-header h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .results-comparison {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .original-results, .simplified-results {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .results-card {
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            padding: 25px;
+            height: 100%;
+        }
+        
+        .results-card h3 {
+            color: var(--dark-gray);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .results-content {
+            line-height: 1.7;
+            white-space: pre-line;
+        }
+        
+        .original-results .results-card {
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .simplified-results .results-card {
+            border-left: 4px solid var(--primary);
+        }
+        
+        .results-actions {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        /* Footer */
+        footer { 
+            background-color: var(--dark-gray); 
+            color: var(--white); 
+            padding: 70px 0 30px; 
+        }
+        
+        .footer-content { 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: space-between; 
+            gap: 40px; 
+            margin-bottom: 40px; 
+        }
+        
+        .footer-column { 
+            flex: 1; 
+            min-width: 200px; 
+        }
+        
+        .footer-column h3 { 
+            color: var(--white); 
+            margin-bottom: 25px; 
+            font-size: 20px; 
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+            bottom: 0;
+            left: 0;
+            border-radius: 2px;
+        }
+        
+        .footer-column p { 
+            color: #AAA; 
+            line-height: 1.7; 
+        }
+        
+        .footer-column ul { 
+            list-style: none; 
+        }
+        
+        .footer-column ul li { 
+            margin-bottom: 12px; 
+        }
+        
+        .footer-column ul li a { 
+            color: #AAA; 
+            text-decoration: none; 
+            transition: color 0.3s; 
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .footer-column ul li a:hover { 
+            color: var(--white); 
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright { 
+            text-align: center; 
+            padding-top: 30px; 
+            border-top: 1px solid rgba(255,255,255,0.1); 
+            font-size: 15px; 
+            color: #AAA; 
+        }
+
+        @media (max-width:768px) {
+            .header-content { flex-direction: column; gap: 15px; }
+            nav ul { margin-top: 15px; flex-wrap: wrap; justify-content: center; }
+            nav ul li { margin: 5px 10px; }
+            .upload-hero h1 { font-size: 32px; }
+            .upload-container { flex-direction: column; }
+            .upload-actions { flex-direction: column; }
+            .results-comparison { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    Med<span>Simplify</span>
+                </a>
+                <nav>
+                    <ul>
+                        <li><a href="index.html#features">Features</a></li>
+                        <li><a href="index.html#how-it-works">How It Works</a></li>
+                        <li><a href="index.html#demo">Demo</a></li>
+                        <li><a href="index.html#testimonials">Testimonials</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <a href="index.html" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Upload Hero Section -->
+    <section class="upload-hero">
+        <div class="container">
+            <div class="upload-hero-content">
+                <h1>Upload Your <span>Medical Reports</span></h1>
+                <p>Get instant, easy-to-understand explanations of your medical reports with our AI-powered analysis.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upload Section -->
+    <section class="upload-section">
+        <div class="container">
+            <div class="upload-container">
+                <div class="upload-options-container">
+                    <div class="upload-options">
+                        <div class="upload-option" id="file-upload-option">
+                            <i class="fas fa-file-upload"></i>
+                            <h3>Upload File</h3>
+                            <p>Upload medical reports in PDF, JPG, PNG, or TXT format</p>
+                            <input type="file" id="file-input" class="file-input" accept=".pdf,.jpg,.jpeg,.png,.txt">
+                            <button class="btn btn-primary" onclick="document.getElementById('file-input').click()">
+                                <i class="fas fa-folder-open"></i> Choose File
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="upload-preview" id="upload-preview">
+                        <div class="preview-header">
+                            <h3>File Preview</h3>
+                            <button class="btn btn-outline" id="change-file-btn">
+                                <i class="fas fa-exchange-alt"></i> Change File
+                            </button>
+                        </div>
+                        <div class="preview-content">
+                            <i class="fas fa-file-medical"></i>
+                            <p>Your file is ready for analysis</p>
+                            <div class="file-info">
+                                <h4 id="file-name">report.pdf</h4>
+                                <p id="file-size">2.4 MB</p>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-container" id="progress-container">
+                            <div class="progress-bar" id="progress-bar"></div>
+                        </div>
+                        
+                        <div class="upload-actions">
+                            <button class="btn btn-primary" id="analyze-btn">
+                                <i class="fas fa-brain"></i> Analyze Report
+                            </button>
+                            <button class="btn btn-outline" id="cancel-btn">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="upload-success" id="upload-success">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Upload Successful!</h3>
+                        <p>Your medical report has been uploaded and is being analyzed.</p>
+                        <p>You will be redirected to your results shortly.</p>
+                    </div>
+                </div>
+                
+                <div class="upload-instructions">
+                    <h3><i class="fas fa-info-circle"></i> Upload Guidelines</h3>
+                    <ul>
+                        <li>Ensure your medical report is clear and legible</li>
+                        <li>Supported formats: PDF, JPG, PNG, TXT (max 10MB)</li>
+                        <li>For best results, use high-quality images</li>
+                        <li>Make sure all text is visible in the document</li>
+                        <li>Remove any personal identifiers if concerned about privacy</li>
+                    </ul>
+                    
+                    <div class="note">
+                        <p><strong>Note:</strong> Our AI analyzes your report to provide simplified explanations. This is for informational purposes only and does not replace professional medical advice.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section" id="results-section">
+        <div class="container">
+            <div class="results-container">
+                <div class="results-header">
+                    <h2>Your Simplified Medical Report</h2>
+                    <p>AI-powered analysis completed successfully</p>
+                </div>
+                
+                <div class="results-comparison">
+                    <div class="original-results">
+                        <div class="results-card">
+                            <h3><i class="fas fa-file-medical"></i> Original Report</h3>
+                            <div class="results-content" id="original-content">
+                                <!-- Original content will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="simplified-results">
+                        <div class="results-card">
+                            <h3><i class="fas fa-comment-medical"></i> Simplified Explanation</h3>
+                            <div class="results-content" id="simplified-content">
+                                <!-- Simplified content will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="results-actions">
+                    <button class="btn btn-primary" id="new-report-btn">
+                        <i class="fas fa-plus"></i> Analyze New Report
+                    </button>
+                    <button class="btn btn-outline" id="download-btn">
+                        <i class="fas fa-download"></i> Download Simplified Report
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About MedSimplify</h3>
+                    <p>MedSimplify helps you understand complex medical reports easily with AI-powered simplifications. We're committed to making healthcare information accessible to everyone.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html#features"><i class="fas fa-chevron-right"></i> Features</a></li>
+                        <li><a href="index.html#how-it-works"><i class="fas fa-chevron-right"></i> How It Works</a></li>
+                        <li><a href="index.html#demo"><i class="fas fa-chevron-right"></i> Demo</a></li>
+                        <li><a href="index.html#testimonials"><i class="fas fa-chevron-right"></i> Testimonials</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><a href="mailto:support@medsimplify.com"><i class="fas fa-envelope"></i> support@medsimplify.com</a></li>
+                        <li><a href="tel:+919876543210"><i class="fas fa-phone"></i> +91 98765 43210</a></li>
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> Healthcare Street, MedCity, IN 560001</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 MedSimplify. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        });
+
+        // Upload functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('file-input');
+            const fileUploadOption = document.getElementById('file-upload-option');
+            const uploadPreview = document.getElementById('upload-preview');
+            const progressContainer = document.getElementById('progress-container');
+            const progressBar = document.getElementById('progress-bar');
+            const analyzeBtn = document.getElementById('analyze-btn');
+            const cancelBtn = document.getElementById('cancel-btn');
+            const changeFileBtn = document.getElementById('change-file-btn');
+            const uploadSuccess = document.getElementById('upload-success');
+            const resultsSection = document.getElementById('results-section');
+            const originalContent = document.getElementById('original-content');
+            const simplifiedContent = document.getElementById('simplified-content');
+            const newReportBtn = document.getElementById('new-report-btn');
+            const downloadBtn = document.getElementById('download-btn');
+            
+            let currentFile = null;
+            let fileContent = '';
+
+            // File upload handling
+            fileInput.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    currentFile = e.target.files[0];
+                    const fileName = currentFile.name;
+                    const fileSize = (currentFile.size / (1024 * 1024)).toFixed(2) + ' MB';
+                    
+                    // Update preview
+                    document.getElementById('file-name').textContent = fileName;
+                    document.getElementById('file-size').textContent = fileSize;
+                    
+                    // Show preview and hide upload options
+                    fileUploadOption.classList.add('active');
+                    uploadPreview.classList.add('active');
+                    
+                    // Read file content for text files
+                    if (currentFile.type === 'text/plain') {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            fileContent = e.target.result;
+                        };
+                        reader.readAsText(currentFile);
+                    }
+                }
+            });
+            
+            // Change file button
+            changeFileBtn.addEventListener('click', function() {
+                fileUploadOption.classList.remove('active');
+                uploadPreview.classList.remove('active');
+                fileInput.value = '';
+                currentFile = null;
+                fileContent = '';
+            });
+            
+            // Cancel button
+            cancelBtn.addEventListener('click', function() {
+                fileUploadOption.classList.remove('active');
+                uploadPreview.classList.remove('active');
+                fileInput.value = '';
+                currentFile = null;
+                fileContent = '';
+                progressContainer.style.display = 'none';
+                uploadSuccess.classList.remove('active');
+            });
+            
+            // Analyze button
+            analyzeBtn.addEventListener('click', function() {
+                if (!currentFile) {
+                    alert('Please select a file first.');
+                    return;
+                }
+                
+                // Show progress bar
+                progressContainer.style.display = 'block';
+                
+                // Simulate upload progress
+                let width = 0;
+                const interval = setInterval(function() {
+                    if (width >= 100) {
+                        clearInterval(interval);
+                        
+                        // Show success message after a delay
+                        setTimeout(function() {
+                            uploadPreview.classList.remove('active');
+                            uploadSuccess.classList.add('active');
+                            
+                            // Process the file and show results after another delay
+                            setTimeout(function() {
+                                uploadSuccess.classList.remove('active');
+                                processAndDisplayResults();
+                            }, 2000);
+                        }, 500);
+                    } else {
+                        width += 5;
+                        progressBar.style.width = width + '%';
+                    }
+                }, 100);
+            });
+            
+            // Process file and display results
+            async function processAndDisplayResults() {
+                try {
+                    // Show loading state
+                    originalContent.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Processing your report...</p>';
+                    simplifiedContent.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Generating simplified explanation...</p>';
+                    
+                    // Call backend API for simplification
+                    const result = await simplifyMedicalReport(currentFile);
+                    
+                    // Display results
+                    if (fileContent) {
+                        originalContent.innerHTML = `<p>${fileContent}</p>`;
+                    } else {
+                        originalContent.innerHTML = `<p>File: ${currentFile.name}</p><p><em>Content extracted and processed by AI</em></p>`;
+                    }
+                    
+                    simplifiedContent.innerHTML = `<p>${result.simplified_text}</p>`;
+                    
+                    // Show results section
+                    resultsSection.classList.add('active');
+                    
+                    // Scroll to results
+                    resultsSection.scrollIntoView({ behavior: 'smooth' });
+                    
+                } catch (error) {
+                    console.error('Error processing report:', error);
+                    simplifiedContent.innerHTML = `<p>Sorry, we encountered an error processing your report. Please try again with a different file.</p><p>Error: ${error.message}</p>`;
+                    resultsSection.classList.add('active');
+                }
+            }
+            
+            // Backend API integration
+            async function simplifyMedicalReport(file) {
+                try {
+                    const formData = new FormData();
+                    formData.append('file', file);
+
+                    const response = await fetch('http://localhost:5000/api/simplify', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    // Check if response is OK
+                    if (!response.ok) {
+                        throw new Error(`Server error: ${response.status} ${response.statusText}`);
+                    }
+                    
+                    // Try to parse JSON
+                    let result;
+                    try {
+                        result = await response.json();
+                    } catch (jsonError) {
+                        throw new Error('Invalid response from server. Please check if the backend is running.');
+                    }
+                    
+                    if (result.error) {
+                        throw new Error(result.error);
+                    }
+                    
+                    if (!result.simplified_text) {
+                        throw new Error('No simplified text received from server');
+                    }
+                    
+                    return result;
+                    
+                } catch (error) {
+                    console.error('API Error:', error);
+                    
+                    // Fallback: Create a basic explanation
+                    return {
+                        simplified_text: `I've processed your medical report. Since our AI service is temporarily unavailable, I recommend:\n\n1. Reviewing the report with your healthcare provider\n2. Asking about any values outside normal ranges\n3. Discussing next steps based on your results\n\nFor detailed interpretation, please consult with your doctor.`
+                    };
+                }
+            }
+            
+            // New report button
+            newReportBtn.addEventListener('click', function() {
+                resultsSection.classList.remove('active');
+                fileUploadOption.classList.remove('active');
+                uploadPreview.classList.remove('active');
+                fileInput.value = '';
+                currentFile = null;
+                fileContent = '';
+                progressBar.style.width = '0%';
+                progressContainer.style.display = 'none';
+                
+                // Scroll back to upload section
+                document.querySelector('.upload-section').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Download button
+            downloadBtn.addEventListener('click', function() {
+                const simplifiedText = simplifiedContent.textContent;
+                const blob = new Blob([simplifiedText], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'simplified-medical-report.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        });
+    </script>
+</body>
+</html>

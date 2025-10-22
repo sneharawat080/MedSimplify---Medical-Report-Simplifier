@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedSimplify | Understand Your Medical Reports</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2E7D32;
+            --primary-dark: #1B5E20;
+            --primary-light: #4CAF50;
+            --secondary: #1565C0;
+            --secondary-light: #42A5F5;
+            --light-gray: #F8F9FA;
+            --medium-gray: #E9ECEF;
+            --dark-gray: #333333;
+            --text-gray: #6C757D;
+            --white: #FFFFFF;
+            --light-blue: #E6F2FF;
+            --accent: #FF9800;
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --danger: #F44336;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        * {
+            margin: 0; padding: 0; box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body { 
+            background-color: var(--white); 
+            color: var(--dark-gray); 
+            line-height: 1.6; 
+            overflow-x: hidden;
+        }
+
+        .container { 
+            width: 100%; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 0 20px; 
+        }
+
+        header {
+            background-color: var(--white); 
+            color: var(--dark-gray);
+            padding: 20px 0; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .header-scrolled {
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .header-content { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            flex-wrap: wrap; 
+        }
+        
+        .logo { 
+            font-size: 28px; 
+            font-weight: 700; 
+            display: flex; 
+            align-items: center; 
+            text-decoration: none;
+            color: var(--dark-gray);
+        }
+        
+        .logo span { 
+            color: var(--primary); 
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        nav ul { 
+            display: flex; 
+            list-style: none; 
+            flex-wrap: wrap; 
+        }
+        
+        nav ul li { 
+            margin-left: 25px; 
+        }
+        
+        nav ul li a { 
+            color: var(--dark-gray); 
+            text-decoration: none; 
+            font-weight: 500; 
+            transition: color 0.3s; 
+            position: relative;
+            padding: 5px 0;
+        }
+        
+        nav ul li a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background: var(--gradient);
+            transition: width 0.3s ease;
+        }
+        
+        nav ul li a:hover { 
+            color: var(--primary); 
+        }
+        
+        nav ul li a:hover:after {
+            width: 100%;
+        }
+
+        .auth-buttons { 
+            display: flex; 
+            gap: 15px; 
+        }
+        
+        .btn { 
+            padding: 12px 28px; 
+            border-radius: 50px; 
+            font-weight: 600; 
+            cursor: pointer; 
+            transition: all 0.3s; 
+            border: none; 
+            font-size: 15px; 
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-outline { 
+            background-color: transparent; 
+            border: 2px solid var(--primary); 
+            color: var(--primary); 
+        }
+        
+        .btn-outline:hover { 
+            background-color: var(--primary); 
+            color: var(--white); 
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-primary { 
+            background: var(--gradient); 
+            color: var(--white); 
+            box-shadow: var(--shadow);
+        }
+        
+        .btn-primary:hover { 
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .hero { 
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,249,250,0.95) 100%), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="rgba(46,125,50,0.05)" stroke-width="1"/></svg>');
+            color: var(--dark-gray); 
+            padding: 120px 0 100px; 
+            text-align: center; 
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            position: relative;
+            z-index: 2;
+        }
+        
+        .hero h1 { 
+            font-size: 52px; 
+            margin-bottom: 20px; 
+            line-height: 1.2; 
+            color: var(--dark-gray); 
+            font-weight: 700;
+        }
+        
+        .hero h1 span { 
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p { 
+            font-size: 20px; 
+            margin-bottom: 40px; 
+            color: var(--text-gray); 
+            max-width: 600px; 
+            margin-left: auto; 
+            margin-right: auto; 
+        }
+
+        /* Upload Section */
+        .upload-section { 
+            background-color: var(--white); 
+            border-radius: 20px; 
+            padding: 50px 40px; 
+            margin-top: 40px; 
+            box-shadow: var(--shadow); 
+            max-width: 700px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            border: 1px solid var(--medium-gray);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .upload-section:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+        
+        .upload-section h3 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--dark-gray);
+            text-align: center;
+        }
+        
+        .upload-section p {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--text-gray);
+        }
+
+        /* Features Section */
+        .features { 
+            padding: 100px 0; 
+            background-color: var(--light-gray); 
+            position: relative;
+        }
+        
+        .section-title { 
+            text-align: center; 
+            margin-bottom: 60px; 
+        }
+        
+        .section-title h2 { 
+            font-size: 42px; 
+            color: var(--dark-gray); 
+            margin-bottom: 15px; 
+            font-weight: 700;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: var(--gradient);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .section-title p { 
+            color: var(--text-gray); 
+            max-width: 600px; 
+            margin: 25px auto 0; 
+            font-size: 18px; 
+        }
+        
+        .features-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(320px,1fr)); 
+            gap: 30px; 
+        }
+        
+        .feature-card { 
+            background-color: var(--white); 
+            border-radius: 15px; 
+            padding: 40px 30px; 
+            box-shadow: var(--shadow); 
+            transition: transform 0.3s, box-shadow 0.3s; 
+            text-align: center; 
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+        
+        .feature-card:hover { 
+            transform: translateY(-10px); 
+            box-shadow: var(--shadow-hover); 
+        }
+        
+        .feature-icon { 
+            margin-bottom: 25px; 
+            width: 80px;
+            height: 80px;
+            background: rgba(46,125,50,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .feature-card h3 { 
+            color: var(--dark-gray); 
+            margin-bottom: 15px; 
+            font-size: 22px; 
+            font-weight: 600;
+        }
+        
+        .feature-card p { 
+            color: var(--text-gray); 
+            line-height: 1.7; 
+        }
+
+        /* How It Works */
+        .how-it-works { 
+            padding: 100px 0; 
+            background-color: var(--white); 
+            position: relative;
+        }
+        
+        .steps { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-top: 60px; 
+            flex-wrap: wrap; 
+            position: relative;
+        }
+        
+        .steps:before {
+            content: '';
+            position: absolute;
+            top: 35px;
+            left: 10%;
+            width: 80%;
+            height: 3px;
+            background: var(--gradient);
+            z-index: 1;
+        }
+        
+        .step { 
+            flex: 1; 
+            min-width: 250px; 
+            text-align: center; 
+            padding: 0 20px; 
+            margin-bottom: 30px; 
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-number { 
+            width: 70px; 
+            height: 70px; 
+            background: var(--gradient); 
+            color: var(--white); 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 28px; 
+            font-weight: bold; 
+            margin: 0 auto 25px; 
+            box-shadow: 0 5px 15px rgba(46,125,50,0.3); 
+            position: relative;
+            z-index: 3;
+        }
+        
+        .step h3 { 
+            color: var(--dark-gray); 
+            margin-bottom: 15px; 
+            font-size: 22px; 
+            font-weight: 600;
+        }
+        
+        .step p { 
+            color: var(--text-gray); 
+        }
+
+        /* Demo Section */
+        .demo { 
+            padding: 100px 0; 
+            background-color: var(--light-gray); 
+        }
+        
+        .demo-container { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 50px; 
+            align-items: center; 
+        }
+        
+        .demo-text { 
+            flex: 1; 
+            min-width: 300px; 
+        }
+        
+        .demo-text h3 { 
+            font-size: 36px; 
+            color: var(--dark-gray); 
+            margin-bottom: 20px; 
+            font-weight: 700;
+        }
+        
+        .demo-text p { 
+            color: var(--text-gray); 
+            margin-bottom: 20px; 
+            font-size: 17px; 
+            line-height: 1.7; 
+        }
+        
+        .demo-visual { 
+            flex: 1; 
+            min-width: 300px; 
+            background-color: var(--white); 
+            border-radius: 15px; 
+            padding: 40px; 
+            box-shadow: var(--shadow); 
+            border: 1px solid var(--medium-gray); 
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .demo-visual:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+        
+        .demo-visual h3 { 
+            color: var(--primary); 
+            margin-bottom: 25px; 
+            text-align: center; 
+            font-size: 24px; 
+            font-weight: 600;
+        }
+        
+        .report-comparison { 
+            display: flex; 
+            gap: 25px; 
+            margin-top: 20px; 
+        }
+        
+        .original-report, .simplified-report { 
+            flex: 1; 
+            padding: 25px; 
+            border-radius: 10px; 
+            position: relative;
+        }
+        
+        .original-report { 
+            background-color: var(--light-blue); 
+            border-left: 4px solid var(--secondary); 
+        }
+        
+        .simplified-report { 
+            background-color: rgba(46,125,50,0.08); 
+            border-left: 4px solid var(--primary); 
+        }
+        
+        .report-title { 
+            font-weight: bold; 
+            margin-bottom: 15px; 
+            color: var(--dark-gray); 
+            font-size: 18px; 
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .report-title i {
+            font-size: 20px;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 100px 0;
+            background-color: var(--white);
+        }
+        
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+        
+        .testimonial-card {
+            background-color: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        
+        .testimonial-card:before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 80px;
+            color: rgba(46,125,50,0.1);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+        
+        .testimonial-text {
+            margin-bottom: 20px;
+            color: var(--text-gray);
+            font-style: italic;
+            line-height: 1.7;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .author-info h4 {
+            color: var(--dark-gray);
+            margin-bottom: 5px;
+        }
+        
+        .author-info p {
+            color: var(--text-gray);
+            font-size: 14px;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 100px 0;
+            background: var(--gradient);
+            color: white;
+            text-align: center;
+        }
+        
+        .cta h2 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .cta p {
+            font-size: 18px;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.9;
+        }
+        
+        .cta .btn {
+            background: white;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .cta .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Footer */
+        footer { 
+            background-color: var(--dark-gray); 
+            color: var(--white); 
+            padding: 70px 0 30px; 
+        }
+        
+        .footer-content { 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: space-between; 
+            gap: 40px; 
+            margin-bottom: 40px; 
+        }
+        
+        .footer-column { 
+            flex: 1; 
+            min-width: 200px; 
+        }
+        
+        .footer-column h3 { 
+            color: var(--white); 
+            margin-bottom: 25px; 
+            font-size: 20px; 
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+            bottom: 0;
+            left: 0;
+            border-radius: 2px;
+        }
+        
+        .footer-column p { 
+            color: #AAA; 
+            line-height: 1.7; 
+        }
+        
+        .footer-column ul { 
+            list-style: none; 
+        }
+        
+        .footer-column ul li { 
+            margin-bottom: 12px; 
+        }
+        
+        .footer-column ul li a { 
+            color: #AAA; 
+            text-decoration: none; 
+            transition: color 0.3s; 
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .footer-column ul li a:hover { 
+            color: var(--white); 
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright { 
+            text-align: center; 
+            padding-top: 30px; 
+            border-top: 1px solid rgba(255,255,255,0.1); 
+            font-size: 15px; 
+            color: #AAA; 
+        }
+
+        @media (max-width:768px) {
+            .step, .report-comparison { flex-direction: column; }
+            .header-content { flex-direction: column; gap: 15px; }
+            nav ul { margin-top: 15px; flex-wrap: wrap; justify-content: center; }
+            nav ul li { margin: 5px 10px; }
+            .hero h1 { font-size: 36px; }
+            .section-title h2 { font-size: 32px; }
+            .steps:before { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    Med<span>Simplify</span>
+                </a>
+                <nav>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#demo">Demo</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <a href="upload.html" class="btn btn-primary"><i class="fas fa-cloud-upload-alt"></i> Upload Report</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Understand Your <span>Medical Reports</span> Instantly</h1>
+                <p>Our advanced AI platform translates complex medical terminology into simple, actionable explanations in seconds.</p>
+                <div class="upload-section">
+                    <h3>Get Started Today</h3>
+                    <p>Upload your medical report and receive a simplified version instantly</p>
+                    <a href="upload.html" class="btn btn-primary"><i class="fas fa-cloud-upload-alt"></i> Upload Your Report</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Powerful Features</h2>
+                <p>Advanced tools designed to help you understand and track your health reports efficiently.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-file-medical fa-2x" style="color:var(--primary);"></i></div>
+                    <h3>Medical Report Analysis</h3>
+                    <p>Analyze reports in seconds and get easy-to-understand explanations for all medical terms with highlighted critical values.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-brain fa-2x" style="color:var(--primary);"></i></div>
+                    <h3>AI-Powered Insights</h3>
+                    <p>Our AI detects anomalies, highlights important values, and gives actionable insights for better health decisions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-shield-alt fa-2x" style="color:var(--primary);"></i></div>
+                    <h3>Secure & Private</h3>
+                    <p>Your medical data is encrypted and stored securely with HIPAA compliance. Your privacy is our priority.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <h2>How It Works</h2>
+                <p>Follow these simple steps to get your reports simplified instantly.</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Upload Your Report</h3>
+                    <p>Select your medical report file to begin the analysis process.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>AI Analysis</h3>
+                    <p>Our AI scans your report, identifies key metrics, and generates simplified explanations.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Receive Insights</h3>
+                    <p>Get your simplified medical report and actionable insights instantly on any device.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo -->
+    <section class="demo" id="demo">
+        <div class="container">
+            <div class="section-title">
+                <h2>See It In Action</h2>
+                <p>Compare your original report with a simplified version for better understanding.</p>
+            </div>
+            <div class="demo-container">
+                <div class="demo-text">
+                    <h3>AI Simplification Example</h3>
+                    <p>Our AI processes complex medical terminologies and presents them in a simple, understandable format for patients.</p>
+                    <p>With MedSimplify, you can quickly understand what your medical results mean without needing a medical degree.</p>
+                    <div style="margin-top: 30px;">
+                        <a href="upload.html" class="btn btn-primary">Try It Now</a>
+                    </div>
+                </div>
+                <div class="demo-visual">
+                    <h3>Report Comparison</h3>
+                    <div class="report-comparison">
+                        <div class="original-report">
+                            <div class="report-title"><i class="fas fa-file-medical"></i> Original Report</div>
+                            <p>Hemoglobin: 13.2 g/dL (Normal range: 12.0-15.5 g/dL)</p>
+                            <p>WBC Count: 10,500 /µL (Normal range: 4,500-11,000 /µL)</p>
+                            <p>Serum Creatinine: 1.4 mg/dL (Normal range: 0.6-1.2 mg/dL)</p>
+                        </div>
+                        <div class="simplified-report">
+                            <div class="report-title"><i class="fas fa-comment-medical"></i> Simplified</div>
+                            <p>✅ Your hemoglobin level is normal.</p>
+                            <p>✅ Your white blood cell count is within normal range.</p>
+                            <p>⚠️ Your creatinine level is slightly elevated, which may indicate your kidneys need attention.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>What Users Say</h2>
+                <p>Discover how MedSimplify has helped people understand their health better.</p>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "I used to dread getting my blood test results. With MedSimplify, I finally understand what all those numbers mean. It's like having a translator for medical jargon!"
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SR</div>
+                        <div class="author-info">
+                            <h4>Sarah Johnson</h4>
+                            <p>Patient with Diabetes</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "As a caregiver for my elderly parents, MedSimplify has been a game-changer. I can quickly understand their lab reports and know what questions to ask their doctors."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MJ</div>
+                        <div class="author-info">
+                            <h4>Michael Torres</h4>
+                            <p>Family Caregiver</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "I recommend MedSimplify to all my patients. It helps them understand their health conditions better and be more engaged in their treatment plans."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">DP</div>
+                        <div class="author-info">
+                            <h4>Dr. Priya Sharma</h4>
+                            <p>General Practitioner</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Understand Your Health Better?</h2>
+            <p>Join thousands of users who are taking control of their health with MedSimplify.</p>
+            <a href="upload.html" class="btn"><i class="fas fa-rocket"></i> Get Started Now</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About MedSimplify</h3>
+                    <p>MedSimplify helps you understand complex medical reports easily with AI-powered simplifications. We're committed to making healthcare information accessible to everyone.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#features"><i class="fas fa-chevron-right"></i> Features</a></li>
+                        <li><a href="#how-it-works"><i class="fas fa-chevron-right"></i> How It Works</a></li>
+                        <li><a href="#demo"><i class="fas fa-chevron-right"></i> Demo</a></li>
+                        <li><a href="#testimonials"><i class="fas fa-chevron-right"></i> Testimonials</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><a href="mailto:support@medsimplify.com"><i class="fas fa-envelope"></i> support@medsimplify.com</a></li>
+                        <li><a href="tel:+919876543210"><i class="fas fa-phone"></i> +91 98765 43210</a></li>
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> Healthcare Street, MedCity, IN 560001</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 MedSimplify. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        });
+
+        // Simple animation on scroll
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const elementsToAnimate = document.querySelectorAll('.feature-card, .step, .testimonial-card');
+            
+            elementsToAnimate.forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
